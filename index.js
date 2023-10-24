@@ -9,7 +9,30 @@ const mysql = require('mysql');
 const dbconfig = require('./config/database.js');
 const connection = mysql.createConnection(dbconfig);
 
-connection.connect();
+connection.connect((err) => {
+    if (err) throw err;
+    console.log("[SUCCESS] MySQL Connected.");
+});
+
+// DB 존재 여부 확인.
+connection.query(`USE ${process.env.DB_DATABASE}`, (err) => {
+    if(err) {
+        connection.query(`CREATE DATABASE ${process.env.DB_DATABASE}`,(err, result) => {
+            if (err) throw err;
+            console.log("[SUCCESS] DATABASE Created");
+            connection.query(`USE ${process.env.DB_DATABASE}`);
+            console.log(`[SUCCESS] USE ${process.env.DB_DATABASE}`)
+            connection.query('CREATE TABLE IF NOT EXISTS Users (user_id INT(10) NOT NULL, kakao_email VARCHAR(50) NOT NULL, name VARCHAR(50), category_1 INT(10), category_2 INT(10), category_3 INT(10), gender BOOL, PRIMARY KEY (user_id));', (err, result) => {
+                if (err) throw err;
+                console.log("[SUCCESS] TABLE Users Created.")
+                connection.query("INSERT INTO Users (user_id, kakao_email, name, category_1, category_2, category_3, gender) VALUES (1, 'admin', 'admin', 0, 0, 0, TRUE);", (err, result) => {
+                    if (err) throw err;
+                    console.log("[SUCCESS] User Admin Created");
+                });
+            });
+        });
+    }
+});
 
 // NodeJS Start.
 app.get("/", (req, res) => {
