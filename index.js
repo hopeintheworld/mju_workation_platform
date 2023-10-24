@@ -1,5 +1,6 @@
 // NodeJS Initial Setting.
 const express = require("express");
+require('dotenv').config(); // 환경변수 모듈 process.env.
 const app = express();
 const port = 8080;
 

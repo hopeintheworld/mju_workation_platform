@@ -1,7 +1,7 @@
 // MySQL Config.
 module.exports = {
-    host: 'localhost',
-    user: 'root', //' < MySQL username >
-    password: 'root', // < MySQL password >
-    database: 'workation_db' // < MySQL Database name >
-};
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER, //' < MySQL username >
+    password: process.env.DB_PASSWORD, // < MySQL password >
+    database: process.env.DB_DATABASE // < MySQL Database name >
+}; 
