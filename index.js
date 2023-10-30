@@ -1,8 +1,53 @@
 // NodeJS Initial Setting.
 const express = require("express");
+const cors = require("cors");
 require('dotenv').config(); // 환경변수 모듈 process.env.
 const app = express();
-const port = 8080;
+
+app.use(express.json()); // Body-Parser 대용, Express에 body-parser가 내장됨.
+app.use(cors());
+
+// Swagger Setting
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const swaggerDefinition = {
+    "openapi" : "3.0.0",
+    "info" : {
+        "version" : "1.0.0",
+        "title" : "MJU Workation Platform",
+        "description" : "2023 명지대학교 캡스톤디자인 4조 백엔드",
+    },
+    "host" : process.env.DOMAIN,
+    "basePath": "/api/",
+    "paths": { },
+    "definitions": { },
+    "responses": { },
+    "parameters": { },
+    "securityDefinitions": {
+      "bearerAuth": {
+        "name": "Authorization",
+        "in": "header",
+        "type": "apiKey",
+        "schema": "bearer",
+        "bearerFormat": "JWT",
+      }
+    }
+};
+
+const options = {
+    swaggerDefinition: swaggerDefinition,
+    apis: ['./app/routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.get('/swagger.json', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
 
 // MySQL Initial Setting.
 const mysql = require('mysql');
@@ -33,6 +78,8 @@ connection.query(`USE ${process.env.DB_DATABASE}`, (err) => {
         });
     }
 });
+
+const port = process.env.PORT;
 
 // NodeJS Start.
 app.get("/", (req, res) => {
