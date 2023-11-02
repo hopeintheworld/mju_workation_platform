@@ -7,6 +7,13 @@
 --------------
 
 1. 프로젝트 파일 실행 순서
-    * index.js 와 동일한 디렉토리에 '.env' 파일 파일 생성 후 필요 정보 채우기.
-    * MySQL DB 생성 -> 추후에 프로젝트 실행시 자동 생성으로 변경할 예정.
+    * index.js 와 동일한 디렉토리에 '.env' 파일 파일 생성 후 아래의 필요 정보 채우기.
+        * DB_HOST=
+        * DB_USER=
+        * DB_PASSWORD=
+        * DB_DATABASE=
+        * DOMAIN=
+        * PORT=
+        
+    * Version 8이상의 MySQL 설치 확인.
     * npm install -> npm start.
