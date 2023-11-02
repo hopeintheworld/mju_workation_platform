@@ -48,13 +48,14 @@ connection.query(`USE ${process.env.DB_DATABASE}`, (err) => {
 });
 
 const port = process.env.PORT;
+const BASE_URI = process.env.BASE_URI;
 
 // NodeJS Start.
-app.get("/", (req, res) => {
+app.get(BASE_URI, (req, res) => {
     res.send("Hello World!")
 });
 
-app.get('/users', (req, res) => {
+app.get(BASE_URI + 'users', (req, res) => {
     connection.query('SELECT * FROM Users', (error, rows, fields) => {
         if (error) throw error;
         console.log('User info is: ', rows);
@@ -62,6 +63,15 @@ app.get('/users', (req, res) => {
     });
 
     connection.end();
+});
+
+app.get(BASE_URI + 'auth/login', (req, res) => {
+    console.log("[GET] auth/login : START");
+    res.send('[200] Just A Moment');
+
+    
+    
+    console.log("[GET] auth/login : END");
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
